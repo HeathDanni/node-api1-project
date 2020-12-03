@@ -1,7 +1,7 @@
 const express = require("express")
 const db = require("./database")
 const server = express()
-server.user(express.json())
+server.use(express.json())
 
 server.get("/", (req, res) => {
     res.json({"message": "hello, world"})
@@ -22,14 +22,20 @@ server.get("/users/:id", (req, res) => {
             message: 'user not found',
         })
     }
-
-    res.json(newUser)
 })
 
 server.post("/users", (req, res) => {
+    if (!res.body.name) {
+        return res.status(401).json({
+            message: "Need a user name"
+        })
+    }
+    
     const newUser = db.createUser({
-        name: "bob doe"
+        name: req.body.name
     })
+
+    res.json(newUser)
 })
 server.listen(8080, () => {
     console.log("server is running")

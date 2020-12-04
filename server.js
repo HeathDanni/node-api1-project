@@ -35,8 +35,7 @@ server.post("/api/users", (req, res) => {
         name: req.body.name,
         bio: req.body.bio
     })
-
-    res.json(newUser)
+    res.status(201).json(newUser)
 })
 
 server.put("/api/users/:id", (req, res) => {
